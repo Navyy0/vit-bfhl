@@ -1,7 +1,3 @@
-// Load environment variables
-const dotenv = require("dotenv");
-dotenv.config();
-
 const express = require("express");
 const cors = require("cors");
 
@@ -9,11 +5,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// user details from .env or defaults (Indian-style values)
-const USER_FULLNAME = (process.env.FULL_NAME || "arjun_sharma").toLowerCase();
-const USER_DOB = process.env.DOB_DDMMYYYY || "15082001";   // 15th Aug 2001
-const USER_EMAIL = process.env.EMAIL || "arjun.sharma@vitstudent.ac.in";
-const USER_ROLL = process.env.ROLL_NUMBER || "21BCE1234";
+// user details (hardcoded Indian-style values)
+const USER_FULLNAME = "arjun_sharma";
+const USER_DOB = "15082001";   // 15th Aug 2001
+const USER_EMAIL = "arjun.sharma@vitstudent.ac.in";
+const USER_ROLL = "21BCE1234";
 
 // helper functions
 const onlyDigits = (val) => /^[0-9]+$/.test(val);
@@ -69,7 +65,7 @@ function segregateInput(items) {
   };
 }
 
-// route
+// POST route
 app.post("/bfhl", (req, res) => {
   const data = req.body && req.body.data;
 
@@ -92,6 +88,11 @@ app.post("/bfhl", (req, res) => {
     roll_number: USER_ROLL,
     ...result,
   });
+});
+
+// simple GET route (for browser test)
+app.get("/", (req, res) => {
+  res.send("✅ VIT-BFHL API is running. Use POST /bfhl to test.");
 });
 
 // start server
